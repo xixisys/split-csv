@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"strconv"
 	"encoding/csv"
+	"path/filepath"
 )
 
 // 拆分
@@ -18,6 +19,8 @@ func Split(pathRecord string, pathSetting string) error {
 	if err != nil {
 		return err
 	}
+
+	pathBase := filepath.Dir(pathRecord)
 
 	for _, s := range settings {
 		nRecords, err := strconv.Atoi(s[0])
@@ -33,6 +36,7 @@ func Split(pathRecord string, pathSetting string) error {
 		for i := 1; i <= nFile; i++ {
 			// 创建文件
 			path := fmt.Sprintf("output-%d-%d.csv", nRecords, i)
+			path = filepath.Join(pathBase, path)
 
 			err = writeCsv(path, records[:nRecords])
 			if err != nil {
