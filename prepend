@@ -1,0 +1,3 @@
+#!/bin/bash
+
+cat $2 | pbcopy && echo $1 > $2 && pbpaste >> $2

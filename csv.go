@@ -65,6 +65,7 @@ func writeCsv(path string, data [][]string) error {
 	defer f.Close()
 
 	w := csv.NewWriter(f)
+	// TODO Added the "email" to the first line.
 	w.Write([]string{"emails"})
 	return w.WriteAll(data)
 }
