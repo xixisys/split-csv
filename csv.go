@@ -1,11 +1,12 @@
 package split_csv
 
 import (
-	"os"
-	"fmt"
-	"strconv"
 	"encoding/csv"
+	"errors"
+	"fmt"
+	"os"
 	"path/filepath"
+	"strconv"
 )
 
 // 拆分
@@ -21,6 +22,10 @@ func Split(pathRecord string, pathSetting string) error {
 	}
 
 	pathBase := filepath.Dir(pathRecord)
+
+	if len(records) < count(settings) {
+		return errors.New("数量不够，请检查文件！")
+	}
 
 	for _, s := range settings {
 		nRecords, err := strconv.Atoi(s[0])
@@ -52,7 +57,7 @@ func Split(pathRecord string, pathSetting string) error {
 }
 
 // 写入 CSV 文件
-func writeCsv(path string, data [][]string) error{
+func writeCsv(path string, data [][]string) error {
 	f, err := os.Create(path)
 	if err != nil {
 		return err
@@ -60,6 +65,7 @@ func writeCsv(path string, data [][]string) error{
 	defer f.Close()
 
 	w := csv.NewWriter(f)
+	w.Write([]string{"emails"})
 	return w.WriteAll(data)
 }
 
@@ -81,4 +87,24 @@ func readCsv(path string) ([][]string, error) {
 	}
 
 	return records[1:], nil
+}
+
+// count setting
+func count(settings [][]string) int {
+	count := 0
+	for _, s := range settings {
+		nRecords, err := strconv.Atoi(s[0])
+		if err != nil {
+			return 0
+		}
+
+		nFile, err := strconv.Atoi(s[1])
+		if err != nil {
+			return 0
+		}
+
+		count = count + nRecords*nFile
+	}
+
+	return count
 }

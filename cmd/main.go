@@ -1,11 +1,12 @@
 package main
 
 import (
-	"os"
-	"strings"
-	"io/ioutil"
-	"path/filepath"
 	csv "github.com/billyct/split-csv"
+	"github.com/fatih/color"
+	"io/ioutil"
+	"os"
+	"path/filepath"
+	"strings"
 )
 
 func main() {
@@ -25,10 +26,9 @@ func main() {
 	checkError(err)
 }
 
-
 // https://blog.csdn.net/skh2015java/article/details/78515002
 func basePath() string {
-	dir, err := filepath.Abs(filepath.Dir(os.Args[0]))  //返回绝对路径  filepath.Dir(os.Args[0])去除最后一个元素的路径
+	dir, err := filepath.Abs(filepath.Dir(os.Args[0])) //返回绝对路径  filepath.Dir(os.Args[0])去除最后一个元素的路径
 	checkError(err)
 	return strings.Replace(dir, "\\", "/", -1) //将\替换成/
 }
@@ -36,6 +36,8 @@ func basePath() string {
 // simple panic error
 func checkError(err error) {
 	if err != nil {
-		panic(err)
+		red := color.New(color.FgHiWhite).Add(color.Bold).Add(color.BgRed)
+		red.Println(err.Error())
+		os.Exit(1)
 	}
 }
