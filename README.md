@@ -1,6 +1,7 @@
 # split-csv
 
 根据配置文件来拆分当前文件夹下的 CSV 文件
+CSV相关的处理，可使用：https://csvkit.readthedocs.io/en/latest/
 
 ### 编译
 ```
